@@ -1,15 +1,15 @@
 package v1
 
 import (
+	"gin-go-bl/coveralls/models"
 	"gin-go-bl/middleware"
-	"gin-go-bl/model"
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
 
 func AddUser(c *gin.Context) {
-	var data model.User
+	var data models.User
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
@@ -27,7 +27,7 @@ func AddUser(c *gin.Context) {
 	code = data.CheckUser(data.UserName)
 	if code == 200 {
 		data.CreatUser()
-		//model.CreatUser(&data)
+		//models.CreatUser(&data)
 	}
 	c.JSON(200, gin.H{
 		"data":    data,
@@ -46,7 +46,7 @@ func GetUser(c *gin.Context) {
 		num = -1
 	}
 
-	data, total := model.GetUser(size, num)
+	data, total := models.GetUser(size, num)
 	code := utils.SUCCESS
 	c.JSON(200, gin.H{
 		"data":    data,
@@ -58,7 +58,7 @@ func GetUser(c *gin.Context) {
 
 func UpdateUser(c *gin.Context) {
 	user, _ := c.Get("user")
-	var data model.User
+	var data models.User
 	id, _ := strconv.Atoi(c.Param("id"))
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
@@ -68,14 +68,14 @@ func UpdateUser(c *gin.Context) {
 
 	switch {
 	case code == 200:
-		model.UpdateUser(id, &data)
+		models.UpdateUser(id, &data)
 	case code == 1001:
 
-		if uint(id) == user.(model.User).ID {
-			model.UpdateUser(id, &data)
+		if uint(id) == user.(models.User).ID {
+			models.UpdateUser(id, &data)
 		}
 
-	case 1 == user.(model.User).ID:
+	case 1 == user.(models.User).ID:
 
 	}
 	c.JSON(200, gin.H{
@@ -87,7 +87,7 @@ func UpdateUser(c *gin.Context) {
 
 func DeleteUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	data := model.DeleteUser(id)
+	data := models.DeleteUser(id)
 	c.JSON(200, gin.H{
 		"status":  data,
 		"message": utils.GetErrMsg(data),

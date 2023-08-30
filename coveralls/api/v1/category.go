@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"gin-go-bl/model"
+	models2 "gin-go-bl/coveralls/models"
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -9,8 +9,8 @@ import (
 
 func AddCategory(c *gin.Context) {
 	user, _ := c.Get("user")
-	id := user.(model.User).ID
-	var data model.Category
+	id := user.(models2.User).ID
+	var data models2.Category
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
@@ -26,7 +26,7 @@ func AddCategory(c *gin.Context) {
 	code := data.CheckCategory()
 	switch code {
 	case 200:
-		model.CreatCategory(&data)
+		models2.CreatCategory(&data)
 		fallthrough
 	default:
 		c.JSON(200, gin.H{
@@ -48,7 +48,7 @@ func GetCategory(c *gin.Context) {
 		num = -1
 	}
 
-	data, total := model.GetCategory(size, num)
+	data, total := models2.GetCategory(size, num)
 	code := utils.SUCCESS
 	c.JSON(200, gin.H{
 		"data":    data,
@@ -59,7 +59,7 @@ func GetCategory(c *gin.Context) {
 }
 
 func UpdateCategory(c *gin.Context) {
-	var data model.Category
+	var data models2.Category
 	id, _ := strconv.Atoi(c.Param("id"))
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
@@ -67,7 +67,7 @@ func UpdateCategory(c *gin.Context) {
 	}
 	code := data.CheckCategory()
 	if code == 200 {
-		model.UpdateCategory(id, &data)
+		models2.UpdateCategory(id, &data)
 	}
 	c.JSON(200, gin.H{
 		"data":    data,
@@ -78,7 +78,7 @@ func UpdateCategory(c *gin.Context) {
 
 func DeleteCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	data := model.DeleteCategory(id)
+	data := models2.DeleteCategory(id)
 	c.JSON(200, gin.H{
 		"status":  data,
 		"message": utils.GetErrMsg(data),
@@ -95,7 +95,7 @@ func DeleteCategory(c *gin.Context) {
 //		num = -1
 //	}
 //
-//	data, total := model.GetCategory(size, num)
+//	data, total := models.GetCategory(size, num)
 //	code = utils.SUCCESS
 //	c.HTML(200, "tags.html", gin.H{
 //		"data":    data,

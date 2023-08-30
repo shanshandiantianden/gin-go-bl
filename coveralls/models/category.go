@@ -1,4 +1,4 @@
-package model
+package models
 
 import (
 	"gin-go-bl/utils"

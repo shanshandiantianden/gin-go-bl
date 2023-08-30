@@ -2,7 +2,7 @@ package v1
 
 import (
 	"fmt"
-	"gin-go-bl/model"
+	models2 "gin-go-bl/coveralls/models"
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -10,15 +10,15 @@ import (
 
 func AddArticle(c *gin.Context) {
 	user, _ := c.Get("user")
-	id := user.(model.User).ID
-	var data model.Article
+	id := user.(models2.User).ID
+	var data models2.Article
 	data.UserId = id
 	if err := c.ShouldBind(&data); err != nil {
 		fmt.Println(err)
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
 	}
-	code := model.CreatArticle(&data)
+	code := models2.CreatArticle(&data)
 	c.JSON(200, gin.H{
 		"data":    data,
 		"status":  code,
@@ -35,8 +35,8 @@ func GetAllArticle(c *gin.Context) {
 		num = -1
 	}
 
-	arts, code, atotal := model.GetAllArticle(size, num)
-	//cate, _ := model.GetCategory(100, 0)
+	arts, code, atotal := models2.GetAllArticle(size, num)
+	//cate, _ := models.GetCategory(100, 0)
 	c.JSON(200, gin.H{
 		"arts": arts,
 		//"cate":    cate,
@@ -47,8 +47,8 @@ func GetAllArticle(c *gin.Context) {
 }
 func GetAllArticles(c *gin.Context) {
 
-	arts, code, atotal := model.GetAllArticles()
-	//cate, _ := model.GetCategory(100, 0)
+	arts, code, atotal := models2.GetAllArticles()
+	//cate, _ := models.GetCategory(100, 0)
 	c.JSON(200, gin.H{
 		"arts": arts,
 		//"cate":    cate,
@@ -68,7 +68,7 @@ func GetUserArticle(c *gin.Context) {
 		num = -1
 	}
 
-	data, code, total := model.GetUserArticle(id, size, num)
+	data, code, total := models2.GetUserArticle(id, size, num)
 	c.JSON(200, gin.H{
 		"data":    data,
 		"size":    total,
@@ -78,7 +78,7 @@ func GetUserArticle(c *gin.Context) {
 }
 func GetMeArticle(c *gin.Context) {
 	data, _ := c.Get("user")
-	id := data.(model.User).ID
+	id := data.(models2.User).ID
 	//personValue := reflect.ValueOf(data)
 	//ID := personValue.FieldByName("ID").Uint()
 	//id := middleware.Userid
@@ -91,7 +91,7 @@ func GetMeArticle(c *gin.Context) {
 		num = -1
 	}
 
-	data, code, total := model.GetUserArticle(int(id), size, num)
+	data, code, total := models2.GetUserArticle(int(id), size, num)
 	c.JSON(200, gin.H{
 		"data":    data,
 		"size":    total,
@@ -110,7 +110,7 @@ func GetCaArticle(c *gin.Context) {
 		num = -1
 	}
 
-	data, code, total := model.GetCatArticle(id, size, num)
+	data, code, total := models2.GetCatArticle(id, size, num)
 	c.JSON(200, gin.H{
 		"data":    data,
 		"size":    total,
@@ -121,7 +121,7 @@ func GetCaArticle(c *gin.Context) {
 func GetArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	data, code := model.GetArticle(id)
+	data, code := models2.GetArticle(id)
 	c.JSON(200, gin.H{
 		"data":    data,
 		"status":  code,
@@ -129,13 +129,13 @@ func GetArticle(c *gin.Context) {
 	})
 }
 func EditArticle(c *gin.Context) {
-	var data model.Article
+	var data models2.Article
 	id, _ := strconv.Atoi(c.Param("id"))
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
 	}
-	code := model.EditArticle(id, &data)
+	code := models2.EditArticle(id, &data)
 	c.JSON(200, gin.H{
 		"data":    data,
 		"status":  code,
@@ -144,7 +144,7 @@ func EditArticle(c *gin.Context) {
 }
 func DeleteArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	data := model.DeleteArticle(id)
+	data := models2.DeleteArticle(id)
 	c.JSON(200, gin.H{
 		"status":  data,
 		"message": utils.GetErrMsg(data),

@@ -1,15 +1,15 @@
 package v1
 
 import (
+	"gin-go-bl/coveralls/models"
 	"gin-go-bl/middleware"
-	"gin-go-bl/model"
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func Login(c *gin.Context) {
-	var data model.User
+	var data models.User
 	if err := c.ShouldBind(&data); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
@@ -17,7 +17,7 @@ func Login(c *gin.Context) {
 
 	user := data.UserName
 	password := data.Password
-	code := model.CheckLogin(user, password)
+	code := models.CheckLogin(user, password)
 	switch {
 	case user == "" || password == "":
 		c.JSON(http.StatusOK, gin.H{
@@ -33,7 +33,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	case code == 200:
-		data = model.GetUserId(user)
+		data = models.GetUserId(user)
 		token, _ := middleware.ReleaseToken(data)
 		c.JSON(http.StatusOK, gin.H{
 			"userid": data.ID,

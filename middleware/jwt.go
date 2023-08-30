@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"gin-go-bl/model"
+	models2 "gin-go-bl/coveralls/models"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -17,7 +17,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func ReleaseToken(user model.User) (string, error) {
+func ReleaseToken(user models2.User) (string, error) {
 
 	// token的有效期
 	expirationTime := time.Now().Add(7 * 24 * time.Hour)
@@ -93,8 +93,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 		// 获取claims中的userId
 		userid := claims.UserId
-		DB := model.DB
-		var user model.User
+		DB := models2.DB
+		var user models2.User
 		DB.Where("id =?", userid).First(&user)
 		// 将用户信息写入上下文便于读取
 		c.Set("user", user)
