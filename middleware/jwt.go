@@ -91,14 +91,14 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		// 获取claims中的userId
-		userid := claims.UserId
-		DB := models2.DB
-		var user models2.User
-		DB.Where("id =?", userid).First(&user)
-		// 将用户信息写入上下文便于读取
-		c.Set("user", user)
-		c.Next()
+		//// 获取claims中的userId
+		//userid := claims.UserId
+		//DB := models2.DB
+		//var user models2.User
+		//DB.Where("id =?", userid).First(&user)
+		//// 将用户信息写入上下文便于读取
+		//c.Set("user", user)
+		//c.Next()
 
 	}
 }

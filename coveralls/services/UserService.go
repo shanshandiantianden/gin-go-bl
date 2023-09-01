@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"gin-go-bl/coveralls/models"
 	"gin-go-bl/utils"
 	uuid "github.com/satori/go.uuid"
@@ -14,7 +15,7 @@ type UserService struct{}
 
 func (userService UserService) CheckUser(username string) (code int) {
 	var user models.User
-	err := models.DB.Raw("SELECT id FROM users WHERE user_name  = ?", username).First(&user).Error
+	err := DB.Raw("SELECT id FROM user WHERE user_name  = ?", username).First(&user).Error
 	if err != nil {
 		panic(err)
 	}
@@ -26,7 +27,7 @@ func (userService UserService) CheckUser(username string) (code int) {
 
 func (userService UserService) GetUserInfo(uuid string) (resUser models.User, code int) {
 	var user models.User
-	err := models.DB.Raw("SELECT * FROM users WHERE uuid = ?", uuid).Scan(&user).Error
+	err := DB.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {
 		panic(err)
 	}
@@ -35,14 +36,18 @@ func (userService UserService) GetUserInfo(uuid string) (resUser models.User, co
 
 func (userService UserService) GetAllUserInfo(pageSize int, pageNum int) (list interface{}, total int64, err error) {
 	var userList []models.User
-	db := models.DB
+	db := DB
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
 	err = db.Model(&models.User{}).Count(&total).Error
 	if err != nil {
 		return
 	}
-	err = db.Raw("SELECT * FROM users LIMIT ?,?  ", offset, limit).Scan(&userList).Error
+	err = db.Raw("SELECT * FROM user LIMIT ?,?", offset, limit).Scan(&userList).Error
+	if err != nil {
+		fmt.Println(err)
+		return userList, total, err
+	}
 	//err := db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&user).Error
 	return userList, total, nil
 }
@@ -51,7 +56,7 @@ func (userService UserService) Register(u models.User) (models.User, int) {
 	userService.CheckUser(u.UserName)
 	u.Password = utils.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
-	err := models.DB.Create(&u).Error
+	err := DB.Create(&u).Error
 	if err != nil {
 		return u, utils.ERROR
 	}

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"gin-go-bl/conf"
+	"gin-go-bl/coveralls/services"
 	"gin-go-bl/middleware"
 	"gin-go-bl/router"
 	"github.com/gin-gonic/gin"
@@ -8,6 +10,7 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.DebugMode)
 	r := gin.Default()
 	//r.LoadHTMLGlob("templates/*")
 	////r.LoadHTMLGlob("views/*")
@@ -18,6 +21,8 @@ func main() {
 			"index": "默认",
 		})
 	})
+	conf.ConfInit()
+	services.MysqlServicesInit()
 	r.Use(gin.Recovery())
 	r.Use(middleware.Cors())
 	r.Use(middleware.Loger())

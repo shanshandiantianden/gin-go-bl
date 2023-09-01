@@ -1,6 +1,9 @@
-time="2023-05-27T15:23:09+08:00" level=info clientIp="::1" dataSize=3676 host=DESKTOP-G503LMJ method=GET path=/v1/articles spendTime="138 ms" status=200 userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50"
-time="2023-05-27T15:23:10+08:00" level=warning clientIp="::1" dataSize=0 host=DESKTOP-G503LMJ method=GET path=/favicon.ico spendTime="0 ms" status=404 userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50"
-e="2023-04-23T23:11:04+08:00" level=info clientIp="::1" dataSize=3230 host=DESKTOP-G503LMJ method=GET path=/v1/articles spendTime="153 ms" status=200 userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48"
+time="2023-09-01T18:19:35+08:00" level=info clientIp="::1" dataSize=238 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="134 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-01T18:20:30+08:00" level=info clientIp="::1" dataSize=267 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="127 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-01T18:20:45+08:00" level=info clientIp="::1" dataSize=267 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="128 ms" status=200 userAgent=PostmanRuntime/7.29.0
+2023-09-01T17:27:48+08:00" level=info clientIp="::1" dataSize=75 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="84 ms" status=200 userAgent=PostmanRuntime/7.29.0
+.0
+=200 userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48"
 erAgent=PostmanRuntime/7.29.0
 time="2023-04-11T23:35:40+08:00" level=info clientIp="::1" dataSize=236 host=DESKTOP-G503LMJ method=PUT path=/v1/user/1 spendTime="332 ms" status=200 userAgent=PostmanRuntime/7.29.0
 time="2023-04-11T23:36:36+08:00" level=info clientIp="::1" dataSize=236 host=DESKTOP-G503LMJ method=PUT path=/v1/user/4 spendTime="366 ms" status=200 userAgent=PostmanRuntime/7.29.0
