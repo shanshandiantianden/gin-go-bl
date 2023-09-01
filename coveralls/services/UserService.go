@@ -25,7 +25,7 @@ func (userService UserService) CheckUser(username string) (code int) {
 	return utils.SUCCESS
 }
 
-func (userService UserService) GetUserInfo(uuid string) (resUser models.User, code int) {
+func (userService UserService) GetUserInfo(uuid uuid.UUID) (resUser models.User, code int) {
 	var user models.User
 	err := DB.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {

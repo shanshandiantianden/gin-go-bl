@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"gin-go-bl/coveralls/models"
 	"gin-go-bl/coveralls/services"
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
@@ -66,6 +67,17 @@ func GetAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data":    data,
 		"total":   total,
+		"status":  code,
+		"message": utils.GetErrMsg(code),
+	})
+}
+func GetMeUser(c *gin.Context) {
+	var service services.UserService
+	tokenUser, _ := c.Get("user")
+	user := tokenUser.(*models.User)
+	data, code := service.GetUserInfo(user.UUID)
+	c.JSON(http.StatusOK, gin.H{
+		"data":    data,
 		"status":  code,
 		"message": utils.GetErrMsg(code),
 	})
