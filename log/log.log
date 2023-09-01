@@ -1,5 +1,5 @@
-time="2023-09-01T18:19:35+08:00" level=info clientIp="::1" dataSize=238 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="134 ms" status=200 userAgent=PostmanRuntime/7.29.0
-time="2023-09-01T18:20:30+08:00" level=info clientIp="::1" dataSize=267 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="127 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-01T18:29:47+08:00" level=info clientIp="::1" dataSize=271 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="130 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-01T18:29:57+08:00" level=info clientIp="::1" dataSize=271 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="128 ms" status=200 userAgent=PostmanRuntime/7.29.0
 time="2023-09-01T18:20:45+08:00" level=info clientIp="::1" dataSize=267 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="128 ms" status=200 userAgent=PostmanRuntime/7.29.0
 2023-09-01T17:27:48+08:00" level=info clientIp="::1" dataSize=75 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="84 ms" status=200 userAgent=PostmanRuntime/7.29.0
 .0

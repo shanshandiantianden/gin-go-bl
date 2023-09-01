@@ -65,7 +65,7 @@ func GetAllUser(c *gin.Context) {
 	code := utils.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"data":    data,
-		"size":    total,
+		"total":   total,
 		"status":  code,
 		"message": utils.GetErrMsg(code),
 	})
