@@ -73,7 +73,7 @@ package v1
 //	id := data.(models2.User).ID
 //	//personValue := reflect.ValueOf(data)
 //	//ID := personValue.FieldByName("ID").Uint()
-//	//id := middleware.Userid
+//	//id := middlewares.Userid
 //	size, _ := strconv.Atoi(c.Param("size"))
 //	num, _ := strconv.Atoi(c.Param("num"))
 //	if size == 0 {

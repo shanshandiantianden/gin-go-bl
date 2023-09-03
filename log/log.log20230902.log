@@ -1,0 +1,2 @@
+time="2023-09-02 00:05:36.541480000" level=info clientIp="::1" dataSize=270 host=DESKTOP-G503LMJ method=POST path=/v1/user spendTime="300 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-02 00:05:44.663400300" level=info clientIp="::1" dataSize=281 host=DESKTOP-G503LMJ method=POST path=/v1/user spendTime="135 ms" status=200 userAgent=PostmanRuntime/7.29.0

@@ -3,7 +3,7 @@ package main
 import (
 	"gin-go-bl/conf"
 	"gin-go-bl/coveralls/services"
-	"gin-go-bl/middleware"
+	"gin-go-bl/middlewares"
 	"gin-go-bl/router"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -24,8 +24,8 @@ func main() {
 	conf.ConfInit()
 	services.MysqlServicesInit()
 	r.Use(gin.Recovery())
-	r.Use(middleware.Cors())
-	r.Use(middleware.Loger())
+	r.Use(middlewares.Cors())
+	r.Use(middlewares.Loger())
 	router.ApiRouter(r)
 	//r.NoRoute(func(c *gin.Context) {
 	//	c.HTML(404, "error.html", nil)

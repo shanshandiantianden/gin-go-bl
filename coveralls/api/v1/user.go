@@ -3,51 +3,38 @@ package v1
 import (
 	"gin-go-bl/coveralls/models"
 	"gin-go-bl/coveralls/services"
+	"gin-go-bl/middlewares"
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-// import (
-//
-//	"gin-go-bl/coveralls/models"
-//	"gin-go-bl/coveralls/services"
-//	"gin-go-bl/middleware"
-//	"gin-go-bl/utils"
-//	"github.com/gin-gonic/gin"
-//	"strconv"
-//
-// )
-//
-//	func AddUser(c *gin.Context) {
-//		var data models.User
-//		if err := c.ShouldBind(&data); err != nil {
-//			c.JSON(200, "bindJsonFail data is invalid")
-//			return
-//		}
-//		msg, code := middleware.Validate(&data)
-//
-//		if code != utils.SUCCESS {
-//			c.JSON(200, gin.H{
-//				"status":  code,
-//				"message": msg,
-//			})
-//			return
-//		}
-//
-//		code = data.CheckUser(data.UserName)
-//		if code == 200 {
-//			data.CreatUser()
-//			//models.CreatUser(&data)
-//		}
-//		c.JSON(200, gin.H{
-//			"data":    data,
-//			"status":  code,
-//			"message": utils.GetErrMsg(code),
-//		})
-//	}
+func RegisterUser(c *gin.Context) {
+	var user models.User
+	var service services.UserService
+	if err := c.ShouldBind(&user); err != nil {
+		c.JSON(200, "bindJsonFail data is invalid")
+		return
+	}
+	msg, code := middlewares.Validate(&user)
+
+	if code != utils.SUCCESS {
+		c.JSON(200, gin.H{
+			"status":  code,
+			"message": msg,
+		})
+		return
+	}
+	regUser, code := service.Register(user)
+	c.JSON(200, gin.H{
+		"data":    regUser,
+		"status":  code,
+		"message": utils.GetErrMsg(code),
+	})
+}
 func GetAllUser(c *gin.Context) {
 	var service services.UserService
 	size, _ := strconv.Atoi(c.Param("Size"))
@@ -83,11 +70,53 @@ func GetMeUser(c *gin.Context) {
 	})
 }
 
-//
-//func UpdateUser(c *gin.Context) {
-//	user, _ := c.Get("user")
+func UpdateMeUser(c *gin.Context) {
+
+	var service services.UserService
+	var updateData models.User
+	uuidString, _ := c.Get("user_uuid")
+	uuid := uuidString.(uuid.UUID)
+	if err := c.ShouldBind(&updateData); err != nil {
+		c.JSON(200, "bindJsonFail data is invalid")
+		return
+	}
+	cCode := service.CheckUser(updateData.UserName)
+	if cCode != 200 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  cCode,
+			"message": utils.GetErrMsg(cCode),
+		})
+		return
+	}
+	if updateData.Password != "" {
+
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  http.StatusUnauthorized,
+			"message": "参数错误",
+		})
+		return
+
+	}
+
+	uCode := service.UpdateUser(uuid, &updateData)
+	if uCode != 200 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  cCode,
+			"message": utils.GetErrMsg(cCode),
+		})
+		return
+	}
+	c.JSON(200, gin.H{
+		"data":    updateData,
+		"status":  uCode,
+		"message": utils.GetErrMsg(uCode),
+	})
+}
+
+//func UpdateMeUser(c *gin.Context) {
+//	tokenUser, _ := c.Get("user")
 //	var data models.User
-//	id, _ := strconv.Atoi(c.Param("id"))
+//	//id, _ := strconv.Atoi(c.Param("id"))
 //	if err := c.ShouldBind(&data); err != nil {
 //		c.JSON(200, "bindJsonFail data is invalid")
 //		return
@@ -112,7 +141,6 @@ func GetMeUser(c *gin.Context) {
 //		"message": utils.GetErrMsg(code),
 //	})
 //}
-//
 //func DeleteUser(c *gin.Context) {
 //	id, _ := strconv.Atoi(c.Param("id"))
 //	data := models.DeleteUser(id)
