@@ -1,5 +1,0 @@
-time="2023-04-07 22:23:22.895623800" level=info clientIp="::1" dataSize=234 host=DESKTOP-G503LMJ method=POST path=/v1/article spendTime="317 ms" status=200 userAgent=PostmanRuntime/7.29.0
-time="2023-04-07 22:24:32.001241200" level=info clientIp="::1" dataSize=226 host=DESKTOP-G503LMJ method=POST path=/v1/article spendTime="275 ms" status=200 userAgent=PostmanRuntime/7.29.0
-time="2023-04-07 23:47:57.653869100" level=info clientIp="::1" dataSize=219 host=DESKTOP-G503LMJ method=POST path=/v1/user spendTime="81 ms" status=200 userAgent=PostmanRuntime/7.29.0
-time="2023-04-07 23:48:06.998181800" level=info clientIp="::1" dataSize=262 host=DESKTOP-G503LMJ method=POST path=/v1/user spendTime="334 ms" status=200 userAgent=PostmanRuntime/7.29.0
-time="2023-04-07 23:49:23.836383300" level=info clientIp="::1" dataSize=208 host=DESKTOP-G503LMJ method=POST path=/v1/user spendTime="311 ms" status=200 userAgent=PostmanRuntime/7.29.0

@@ -1,6 +1,7 @@
 package router
 
 import (
+	"gin-go-bl/framework/Services"
 	"gin-go-bl/framework/api/v1"
 	"gin-go-bl/middlewares"
 	"github.com/gin-gonic/gin"
@@ -9,11 +10,15 @@ import (
 func ApiRouter(r *gin.Engine) {
 	r1 := r.Group("/v1")
 	{
+
+		// 初始化服务层并传递给控制器
+		userService := Services.UserServiceImpl{}
+		itemController := v1.NewUserController(userService)
 		//用户接口
-		r1.POST("/user", v1.RegisterUser)
-		r1.GET("/user/:Size/:Page", middlewares.JWTAuth(), v1.GetAllUser)
-		r1.PUT("/user", middlewares.JWTAuth(), v1.UpdateMeUser)
-		//r1.DELETE("/user/:id", middlewares.AuthMiddleware(), v12.DeleteUser)
+		r1.POST("/user", itemController.RegisterUser)
+		r1.GET("/user/:Size/:Page", middlewares.JWTAuth(), itemController.GetAllUser)
+		r1.PUT("/user", middlewares.JWTAuth(), itemController.UpdateMeUser)
+		r1.DELETE("/user/:u", itemController.DeleteUser)
 
 		////分类接口
 		//r1.POST("/cate", middlewares.AuthMiddleware(), v12.AddCategory)
@@ -33,7 +38,7 @@ func ApiRouter(r *gin.Engine) {
 		//r1.DELETE("/article/:id", middlewares.AuthMiddleware(), v12.DeleteArticle)
 
 		//登录
-		r1.POST("/login", v1.PasswordLogin)
+		r1.POST("/login", itemController.PasswordLogin)
 
 	}
 

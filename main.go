@@ -25,6 +25,7 @@ func main() {
 	Services.MysqlServicesInit()
 	r.Use(gin.Recovery(), middlewares.Cors(), middlewares.Loger(), middlewares.UnifiedResponseMiddleware())
 	router.ApiRouter(r)
+
 	if err := r.Run(":8090"); err != nil {
 		log.Fatal(err.Error())
 	} // 监听并在 0.0.0.0:8090 上启动服务

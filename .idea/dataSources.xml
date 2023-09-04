@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:redis://47.115.204.104:6379/0</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@rm-bp16v29co3893zkyplo.mysql.rds.aliyuncs.com" uuid="7df87b21-0f99-4957-9a60-6e612c0cf05f">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rm-bp16v29co3893zkyplo.mysql.rds.aliyuncs.com:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

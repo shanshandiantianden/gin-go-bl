@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func RegisterUser(c *gin.Context) {
+func (ctrl *UserController) RegisterUser(c *gin.Context) {
 	var user Models.User
 	var service Services.UserService
 	if err := c.ShouldBind(&user); err != nil {
@@ -33,7 +33,7 @@ func RegisterUser(c *gin.Context) {
 	})
 }
 
-func PasswordLogin(c *gin.Context) {
+func (ctrl *UserController) PasswordLogin(c *gin.Context) {
 	var formdata Models.PasswordLogin
 	var loginService Services.LoginService
 	if err := c.ShouldBind(&formdata); err != nil {
