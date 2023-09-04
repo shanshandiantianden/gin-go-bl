@@ -2,7 +2,7 @@ package main
 
 import (
 	"gin-go-bl/conf"
-	"gin-go-bl/coveralls/services"
+	"gin-go-bl/framework/Services"
 	"gin-go-bl/middlewares"
 	"gin-go-bl/router"
 	"github.com/gin-gonic/gin"
@@ -22,15 +22,9 @@ func main() {
 		})
 	})
 	conf.ConfInit()
-	services.MysqlServicesInit()
-	r.Use(gin.Recovery())
-	r.Use(middlewares.Cors())
-	r.Use(middlewares.Loger())
+	Services.MysqlServicesInit()
+	r.Use(gin.Recovery(), middlewares.Cors(), middlewares.Loger(), middlewares.UnifiedResponseMiddleware())
 	router.ApiRouter(r)
-	//r.NoRoute(func(c *gin.Context) {
-	//	c.HTML(404, "error.html", nil)
-	//})
-
 	if err := r.Run(":8090"); err != nil {
 		log.Fatal(err.Error())
 	} // 监听并在 0.0.0.0:8090 上启动服务

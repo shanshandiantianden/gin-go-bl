@@ -1,4 +1,4 @@
-package models
+package Models
 
 type Admin struct {
 	Id       uint   `gorm:"int;not null;primary_key" json:"id"`

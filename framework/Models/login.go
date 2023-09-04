@@ -1,4 +1,4 @@
-package models
+package Models
 
 type PasswordLogin struct {
 	UserName string `json:"username"`

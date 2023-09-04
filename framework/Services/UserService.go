@@ -1,23 +1,19 @@
-package services
+package Services
 
 import (
 	"errors"
 	"fmt"
-	"gin-go-bl/coveralls/models"
+	"gin-go-bl/framework/Models"
 	"gin-go-bl/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"log"
 )
 
-//var NewZzOrmService = &UserService{
-//	user: datasource.DefaultDB,
-//}
-
 type UserService struct{}
 
-func (userService UserService) CheckUser(username string) (code int) {
-	var user models.User
+func (us UserService) CheckUser(username string) (code int) {
+	var user Models.User
 	err := DB.Raw("SELECT id FROM user WHERE user_name  = ?", username).First(&user).Error
 
 	//如果err不为gorm.ErrRecordNotFound(查询记录为空)
@@ -29,7 +25,7 @@ func (userService UserService) CheckUser(username string) (code int) {
 	return utils.SUCCESS
 }
 
-func (userService UserService) GetUserInfo(uuid uuid.UUID) (user models.User, code int) {
+func (us UserService) GetUserInfo(uuid uuid.UUID) (user Models.User, code int) {
 	err := DB.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {
 		log.Println(err)
@@ -38,11 +34,11 @@ func (userService UserService) GetUserInfo(uuid uuid.UUID) (user models.User, co
 	return user, utils.SUCCESS
 }
 
-func (userService UserService) GetAllUserInfo(pageSize int, pageNum int) (list interface{}, total int64, err error) {
+func (us UserService) GetAllUserInfo(pageSize int, pageNum int) (list interface{}, total int64, err error) {
 	db := DB
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
-	err = db.Model(&models.User{}).Count(&total).Error
+	err = db.Model(&Models.User{}).Count(&total).Error
 	if err != nil {
 		return
 	}
@@ -54,8 +50,8 @@ func (userService UserService) GetAllUserInfo(pageSize int, pageNum int) (list i
 	return list, total, nil
 }
 
-func (userService UserService) Register(u models.User) (models.User, int) {
-	code := userService.CheckUser(u.UserName)
+func (us UserService) Register(u Models.User) (Models.User, int) {
+	code := us.CheckUser(u.UserName)
 	u.Password = utils.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
 	if code == 200 {
@@ -68,8 +64,8 @@ func (userService UserService) Register(u models.User) (models.User, int) {
 	return u, code
 }
 
-func (userService UserService) UpdateUser(uuid uuid.UUID, data *models.User) int {
-	var user models.User
+func (us UserService) UpdateUser(uuid uuid.UUID, data *Models.User) int {
+	var user Models.User
 
 	//data.Password = utils.BcryptHash(data.Password)
 	err := DB.Model(&user).Where("uuid = ?", uuid).Updates(data).Error
@@ -82,10 +78,8 @@ func (userService UserService) UpdateUser(uuid uuid.UUID, data *models.User) int
 
 }
 
-func (userService UserService) DeleteUser(uuid uuid.UUID) int {
-	var user models.User
-	err := DB.Where("uuid = ?", uuid).Delete(&user).Error
-
+func (us UserService) DeleteUser(uuid uuid.UUID) int {
+	err = DB.Raw("delete from user where uuid = '?'", uuid).Error
 	if err != nil {
 
 		return utils.ERROR

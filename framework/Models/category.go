@@ -1,4 +1,4 @@
-package models
+package Models
 
 type Category struct {
 	Cid    uint   `gorm:"int;not null;primary_key;" json:"cid"`

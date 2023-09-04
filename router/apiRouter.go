@@ -1,7 +1,7 @@
 package router
 
 import (
-	"gin-go-bl/coveralls/api/v1"
+	"gin-go-bl/framework/api/v1"
 	"gin-go-bl/middlewares"
 	"github.com/gin-gonic/gin"
 )
