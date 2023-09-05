@@ -32,12 +32,8 @@ func (ctrl *UserController) RegisterUser(c *gin.Context) {
 		})
 		return
 	}
-	regUser, code := ctrl.UserService.Register(user)
-	c.JSON(200, gin.H{
-		"data":    regUser,
-		"status":  code,
-		"message": utils.GetErrMsg(code),
-	})
+	res := ctrl.UserService.Register(user)
+	c.JSON(200, res)
 }
 
 func (ctrl *UserController) PasswordLogin(c *gin.Context) {

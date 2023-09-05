@@ -1,38 +1,41 @@
 package Services
 
 import (
-	"errors"
 	"gin-go-bl/framework/Models"
 	"gin-go-bl/utils"
 	uuid "github.com/satori/go.uuid"
-	"gorm.io/gorm"
 	"log"
 )
 
 type UserServiceImpl struct{}
 
-var id = Models.User{}.ID
+func (us UserServiceImpl) CheckUser(username string) (ok bool) {
 
-func (us UserServiceImpl) CheckUser(username string) (code int) {
+	var count int
 
-	err := DB.Raw("SELECT id FROM user WHERE user_name  = ?", username).First(&id).Error
-	//如果err不为gorm.ErrRecordNotFound(查询记录为空)
-	if !errors.Is(err, gorm.ErrRecordNotFound) {
-		return utils.ERROR_USERNAME_USED
-		//recover()
+	// 执行原生 SQL 查询
+	err := DB.Raw("SELECT COUNT(*) FROM user WHERE user_name = ?", username).Scan(&count).Error
+	if err != nil {
+		log.Println(err)
+		return false // 返回错误信息
 	}
-	return utils.SUCCESS
+
+	// 如果记录数量大于 0，则表示 UUID 存在
+	return count > 0
 }
 
 func (us UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
-	err := DB.Raw("SELECT id FROM user WHERE uuid  = ?", uuid).First(&id).Error
-	//如果err不为gorm.ErrRecordNotFound(查询记录为空)
-	if !errors.Is(err, gorm.ErrRecordNotFound) {
-		//log.Println(err)
-		return false
-		//recover()
+	var count int
+
+	// 执行原生 SQL 查询
+	err := DB.Raw("SELECT COUNT(*) FROM user WHERE uuid = ?", uuid).Scan(&count).Error
+	if err != nil {
+		log.Println(err)
+		return false // 返回错误信息
 	}
-	return true
+
+	// 如果记录数量大于 0，则表示 UUID 存在
+	return count > 0
 }
 
 func (us UserServiceImpl) GetUserInfo(uuid uuid.UUID) (user Models.User, code int) {
@@ -60,21 +63,21 @@ func (us UserServiceImpl) GetAllUserInfo(pageSize int, pageNum int) (list []Mode
 	return list, total, nil
 }
 
-func (us UserServiceImpl) Register(u Models.User) (Models.User, int) {
-	code := us.CheckUser(u.UserName)
+func (us UserServiceImpl) Register(u Models.User) utils.Error {
+	ok := us.CheckUser(u.UserName)
 	u.Password = utils.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
-	if code == 200 {
+	if ok {
 		err := DB.Create(&u).Error
 		if err != nil {
-			return u, utils.ERROR
+			return utils.ErrGormQuery
 		}
-		return u, utils.SUCCESS
+		return utils.OK.WithData(u)
 	}
-	return u, code
+	return utils.ErrServer
 }
 
-func (us UserServiceImpl) UpdateUser(uuid uuid.UUID, data *Models.User) int {
+func (us UserServiceImpl) UpdateUser(uuid uuid.UUID, data *Models.User) utils.Error {
 	var user Models.User
 
 	//code:= us.CheckUser()
@@ -84,12 +87,10 @@ func (us UserServiceImpl) UpdateUser(uuid uuid.UUID, data *Models.User) int {
 		"uuid = ?",
 		uuid,
 	).Updates(data).Error
-
 	if err != nil {
-
-		return utils.ERROR
+		return utils.ErrGormQuery
 	}
-	return utils.SUCCESS
+	return utils.OK.WithData(data)
 
 }
 

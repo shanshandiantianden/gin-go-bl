@@ -97,40 +97,23 @@ func (ctrl *UserController) UpdateMeUser(c *gin.Context) {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
 	}
-	cCode := ctrl.UserService.CheckUser(updateData.UserName)
+	cOk := ctrl.UserService.CheckUser(updateData.UserName)
 
-	if cCode != 200 {
+	if !cOk {
 		// 返回用户名冲突的错误响应
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status":  cCode,
-			"message": utils.GetErrMsg(cCode),
-		})
+		c.JSON(http.StatusUnauthorized, utils.ErrUserExist)
 		return
 	}
 	// 检查密码是否为空
 	if updateData.Password != "" {
 
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status":  http.StatusUnauthorized,
-			"message": "参数错误",
-		})
+		c.JSON(http.StatusUnauthorized, utils.ErrParam)
 		return
 
 	}
 
-	uCode := ctrl.UserService.UpdateUser(uuid, &updateData)
-	if uCode != 200 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":  cCode,
-			"message": utils.GetErrMsg(cCode),
-		})
-		return
-	}
-	c.JSON(200, gin.H{
-		"data":    updateData,
-		"status":  uCode,
-		"message": utils.GetErrMsg(uCode),
-	})
+	res := ctrl.UserService.UpdateUser(uuid, &updateData)
+	c.JSON(http.StatusOK, res)
 }
 
 func (ctrl *UserController) DeleteUser(c *gin.Context) {
