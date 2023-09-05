@@ -21,7 +21,6 @@ func NewUserController(userService Services.UserService) *UserController {
 		UserService: userService,
 	}
 }
-
 func (ctrl *UserController) GetAllUser(c *gin.Context) {
 	size, _ := strconv.Atoi(c.Param("Size"))
 	page, _ := strconv.Atoi(c.Param("Page"))

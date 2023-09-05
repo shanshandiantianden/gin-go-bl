@@ -17,15 +17,15 @@ func (loginService LoginService) FindUserInfo(name string, password string) (*Mo
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			//log.Println(err)
-			return nil, utils.ERROR_USERNAME_USED
+			return nil, utils.ErrUserNotExist.GetStatusCode()
 			//recover()
 		}
 		log.Println(err)
 	}
 
 	if !utils.BcryptCheck(password, user.Password) {
-		return nil, utils.ERROR_PASSWORD_WRONG
+		return nil, utils.ErrUserPassword.GetStatusCode()
 	}
 
-	return &user, utils.SUCCESS
+	return &user, utils.OK.GetStatusCode()
 }

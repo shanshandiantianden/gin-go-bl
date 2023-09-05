@@ -11,11 +11,13 @@ import (
 
 type UserServiceImpl struct{}
 
+var id = Models.User{}.ID
+
 func (us UserServiceImpl) CheckUser(username string) (code int) {
-	err := DB.Raw("SELECT id FROM user WHERE user_name  = ?", username).Error
+
+	err := DB.Raw("SELECT id FROM user WHERE user_name  = ?", username).First(&id).Error
 	//如果err不为gorm.ErrRecordNotFound(查询记录为空)
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
-		//log.Println(err)
 		return utils.ERROR_USERNAME_USED
 		//recover()
 	}
@@ -23,7 +25,7 @@ func (us UserServiceImpl) CheckUser(username string) (code int) {
 }
 
 func (us UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
-	err := DB.Raw("SELECT id FROM user WHERE uuid  = ?", uuid).Error
+	err := DB.Raw("SELECT id FROM user WHERE uuid  = ?", uuid).First(&id).Error
 	//如果err不为gorm.ErrRecordNotFound(查询记录为空)
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		//log.Println(err)

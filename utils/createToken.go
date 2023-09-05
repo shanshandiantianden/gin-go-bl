@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"gin-go-bl/framework/Models"
 	"gin-go-bl/middlewares"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -10,13 +11,13 @@ import (
 	"time"
 )
 
-func CreateToken(c *gin.Context, Id uint, NickName string, uuid uuid.UUID) string {
+func CreateToken(c *gin.Context, sessionInfo *Models.SessionUserInfo) string {
 	//生成token信息
 	j := middlewares.NewJWT()
 	claims := middlewares.CustomClaims{
-		ID:       Id,
-		NickName: NickName,
-		UUID:     uuid,
+		ID:       sessionInfo.UserID,
+		NickName: sessionInfo.UserName,
+		UUID:     sessionInfo.UUID,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix(),
 			// TODO 设置token过期时间

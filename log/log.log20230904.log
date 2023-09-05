@@ -2,6 +2,7 @@ time="2023-09-04 09:43:52.985712900" level=warning clientIp="::1" dataSize=42 ho
 time="2023-09-04 09:45:18.845016700" level=warning clientIp="::1" dataSize=0 host=DESKTOP-5T52G1B method=DELETE path=/v1/article/6 spendTime="0 ms" status=404 userAgent=PostmanRuntime/7.29.0
 time="2023-09-04 09:55:03.271839700" level=warning clientIp="::1" dataSize=42 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="1 ms" status=401 userAgent=PostmanRuntime/7.29.0
 time="2023-09-04 11:05:13.898789500" level=warning clientIp="::1" dataSize=42 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="1 ms" status=401 userAgent=PostmanRuntime/7.29.0
+time="2023-09-04 14:49:45.993948900" level=warning clientIp="::1" dataSize=42 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="1 ms" status=401 userAgent=PostmanRuntime/7.29.0
 time="2023-09-04 22:13:46.176873900" level=info clientIp="::1" dataSize=215 host=DESKTOP-G503LMJ method=PUT path=/v1/user spendTime="3022 ms" status=200 userAgent=PostmanRuntime/7.29.0
 time="2023-09-04 22:35:51.399305400" level=info clientIp="::1" dataSize=1358 host=DESKTOP-G503LMJ method=GET path=/v1/user/10/1 spendTime="153 ms" status=200 userAgent=PostmanRuntime/7.29.0
 time="2023-09-04 22:35:57.891681600" level=info clientIp="::1" dataSize=1358 host=DESKTOP-G503LMJ method=GET path=/v1/user/10/1 spendTime="160 ms" status=200 userAgent=PostmanRuntime/7.29.0

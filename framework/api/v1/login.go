@@ -9,15 +9,22 @@ import (
 	"net/http"
 )
 
+type loginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+type loginResponse struct {
+	Token    string                  `json:"token"` // 用户身份标识
+	UserInfo *Models.SessionUserInfo `json:"userinfo"`
+}
+
 func (ctrl *UserController) RegisterUser(c *gin.Context) {
 	var user Models.User
-	var service Services.UserService
 	if err := c.ShouldBind(&user); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
 	}
 	msg, code := middlewares.Validate(&user)
-
 	if code != utils.SUCCESS {
 		c.JSON(200, gin.H{
 			"status":  code,
@@ -25,7 +32,7 @@ func (ctrl *UserController) RegisterUser(c *gin.Context) {
 		})
 		return
 	}
-	regUser, code := service.Register(user)
+	regUser, code := ctrl.UserService.Register(user)
 	c.JSON(200, gin.H{
 		"data":    regUser,
 		"status":  code,
@@ -34,37 +41,34 @@ func (ctrl *UserController) RegisterUser(c *gin.Context) {
 }
 
 func (ctrl *UserController) PasswordLogin(c *gin.Context) {
-	var formdata Models.PasswordLogin
+	req := new(loginRequest)
+	res := new(loginResponse)
+
 	var loginService Services.LoginService
-	if err := c.ShouldBind(&formdata); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
 	}
-	if formdata.UserName == "" || formdata.Password == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 404,
-			"msg":  "用户名或密码为空",
-		})
-	}
-	user, code := loginService.FindUserInfo(formdata.UserName, formdata.Password)
-	if code == 1001 || code == 1002 {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 404,
-			"msg":  "用户名或密码错误!",
-		})
+	if req.Username == "" || req.Password == "" {
+		c.JSON(http.StatusNotFound, utils.ErrLoginNil)
 		return
 	}
-
-	token := utils.CreateToken(c, user.ID, user.UserName, user.UUID)
-	c.JSON(http.StatusOK, gin.H{
-		"user": gin.H{
-			"name":   user.UserName,
-			"uuid":   user.UUID,
-			"avatar": user.Avatar,
-		},
-		"token": token,
-		"code":  utils.SUCCESS,
-		"msg":   "登陆成功",
-	})
-
+	info, code := loginService.FindUserInfo(req.Username, req.Password)
+	switch {
+	case code == utils.ErrUserNotExist.GetStatusCode():
+		c.JSON(http.StatusNotFound, utils.ErrUserNotExist)
+		return
+	case code == utils.ErrUserPassword.GetStatusCode():
+		c.JSON(http.StatusNotFound, utils.ErrUserPassword)
+		return
+	default:
+		// 用户信息
+		res.UserInfo = &Models.SessionUserInfo{
+			UserID:   info.ID,
+			UserName: info.UserName,
+			UUID:     info.UUID,
+		}
+		res.Token = utils.CreateToken(c, res.UserInfo)
+		c.JSON(http.StatusOK, utils.OK.WithData(res))
+	}
 }

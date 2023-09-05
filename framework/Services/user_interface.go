@@ -6,9 +6,9 @@ import (
 )
 
 type UserService interface {
-	// CheckUser 检查用户是否存在
+	// CheckUser 检查用户名是否存在
 	CheckUser(username string) (code int)
-	// CheckUUID
+	// CheckUUID 检查UUID是否存在
 	CheckUUID(uuid uuid.UUID) (ok bool)
 
 	// GetUserInfo 根据UUID获取用户信息
@@ -21,6 +21,6 @@ type UserService interface {
 
 	// UpdateUser 更新用户信息
 	UpdateUser(uuid uuid.UUID, data *Models.User) int
-	//删除用户
+	// DeleteUser 删除用户
 	DeleteUser(uuid uuid.UUID) int
 }
