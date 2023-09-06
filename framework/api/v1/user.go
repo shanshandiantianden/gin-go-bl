@@ -7,7 +7,6 @@ import (
 	"gin-go-bl/utils"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -26,55 +25,32 @@ func (ctrl *UserController) GetAllUser(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Param("Page"))
 
 	if size == 0 {
-		size = global.DefaultSize
+		size = global.DefaultPageSize
 	}
 	if page == 0 {
 		page = global.DefaultPage
 	}
-	data, total, err := ctrl.UserService.GetAllUserInfo(size, page)
-	if err != nil {
-		log.Println(err)
-		// 返回适当的错误响应
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Internal Server Error",
-		})
-		return
-
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"data":    data,
-		"total":   total,
-		"status":  utils.SUCCESS,
-		"message": utils.GetErrMsg(utils.SUCCESS),
-	})
+	res, httpStatus := ctrl.UserService.GetAllInfo(size, page)
+	c.JSON(httpStatus, res)
 }
 func (ctrl *UserController) GetMeUser(c *gin.Context) {
 	tokenUser, exists := c.Get("user")
 	if !exists {
 		// 返回未经授权的错误响应
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized",
-		})
+		c.JSON(http.StatusUnauthorized, utils.ErrUnauthorized)
 		return
 	}
 	user, ok := tokenUser.(*Models.User)
 	if !ok {
 		// 返回未经授权的错误响应
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized",
-		})
+		c.JSON(http.StatusUnauthorized, utils.ErrUnauthorized)
 		return
 	}
-	data, code := ctrl.UserService.GetUserInfo(user.UUID)
-	c.JSON(http.StatusOK, gin.H{
-		"data":    data,
-		"status":  code,
-		"message": utils.GetErrMsg(code),
-	})
+	res, httpStatus := ctrl.UserService.GetInfo(user.UUID)
+	c.JSON(httpStatus, res)
 }
 
-func (ctrl *UserController) UpdateMeUser(c *gin.Context) {
+func (ctrl *UserController) EditMeUserInfo(c *gin.Context) {
 	var updateData Models.User
 	uuidString, exists := c.Get("user_uuid")
 	if !exists {
@@ -112,8 +88,8 @@ func (ctrl *UserController) UpdateMeUser(c *gin.Context) {
 
 	}
 
-	res := ctrl.UserService.UpdateUser(uuid, &updateData)
-	c.JSON(http.StatusOK, res)
+	res, httpStatus := ctrl.UserService.EditInfo(uuid, &updateData)
+	c.JSON(httpStatus, res)
 }
 
 func (ctrl *UserController) DeleteUser(c *gin.Context) {
@@ -125,14 +101,10 @@ func (ctrl *UserController) DeleteUser(c *gin.Context) {
 		return
 	}
 	if !ctrl.UserService.CheckUUID(u) {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "当前用户不存在",
-		})
+		c.JSON(http.StatusUnauthorized, utils.ErrUserNotExist)
 		return
 	}
-	data := ctrl.UserService.DeleteUser(u)
-	c.JSON(200, gin.H{
-		"status":  data,
-		"message": utils.GetErrMsg(data),
-	})
+	res, httpStatus := ctrl.UserService.Delete(u)
+
+	c.JSON(httpStatus, res)
 }

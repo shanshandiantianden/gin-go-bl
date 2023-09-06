@@ -25,15 +25,12 @@ func (ctrl *UserController) RegisterUser(c *gin.Context) {
 		return
 	}
 	msg, code := middlewares.Validate(&user)
-	if code != utils.SUCCESS {
-		c.JSON(200, gin.H{
-			"status":  code,
-			"message": msg,
-		})
+	if code != http.StatusOK {
+		c.JSON(http.StatusUnauthorized, utils.ErrParam.WithData(msg))
 		return
 	}
-	res := ctrl.UserService.Register(user)
-	c.JSON(200, res)
+	res, httpStatus := ctrl.UserService.Create(user)
+	c.JSON(httpStatus, res)
 }
 
 func (ctrl *UserController) PasswordLogin(c *gin.Context) {

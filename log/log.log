@@ -1,10 +1,10 @@
-time="2023-09-05T18:09:56+08:00" level=info clientIp="::1" dataSize=396 host=DESKTOP-5T52G1B method=POST path=/v1/login spendTime="142 ms" status=200 userAgent=PostmanRuntime/7.29.0
-time="2023-09-05T18:11:15+08:00" level=info clientIp="::1" dataSize=396 host=DESKTOP-5T52G1B method=POST path=/v1/login spendTime="139 ms" status=200 userAgent=PostmanRuntime/7.29.0
-.0
-time="2023-09-05T18:04:03+08:00" level=warning clientIp="::1" dataSize=59 host=DESKTOP-5T52G1B method=POST path=/v1/login spendTime="0 ms" status=404 userAgent=PostmanRuntime/7.29.0
-time="2023-09-05T18:04:11+08:00" level=warning clientIp="::1" dataSize=50 host=DESKTOP-5T52G1B method=POST path=/v1/login spendTime="72 ms" status=404 userAgent=PostmanRuntime/7.29.0
-time="2023-09-05T18:04:16+08:00" level=info clientIp="::1" dataSize=396 host=DESKTOP-5T52G1B method=POST path=/v1/login spendTime="136 ms" status=200 userAgent=PostmanRuntime/7.29.0
-05T16:38:01+08:00" level=info clientIp="::1" dataSize=283 host=DESKTOP-5T52G1B method=POST path=/v1/user spendTime="63 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06T11:25:52+08:00" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="119 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06T11:18:00+08:00" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="125 ms" status=200 userAgent=PostmanRuntime/7.29.0
+0
+me="2023-09-06T10:27:33+08:00" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="112 ms" status=200 userAgent=PostmanRuntime/7.29.0
+2023-09-06T10:15:59+08:00" level=error clientIp="::1" dataSize=56 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="114 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06T10:17:04+08:00" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="118 ms" status=200 userAgent=PostmanRuntime/7.29.0
+01+08:00" level=info clientIp="::1" dataSize=283 host=DESKTOP-5T52G1B method=POST path=/v1/user spendTime="63 ms" status=200 userAgent=PostmanRuntime/7.29.0
 PostmanRuntime/7.29.0
 ntime/7.29.0
 time="2023-04-11T23:36:36+08:00" level=info clientIp="::1" dataSize=236 host=DESKTOP-G503LMJ method=PUT path=/v1/user/4 spendTime="366 ms" status=200 userAgent=PostmanRuntime/7.29.0

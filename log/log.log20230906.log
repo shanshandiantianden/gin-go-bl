@@ -1,0 +1,15 @@
+time="2023-09-06 10:14:33.728304200" level=warning clientIp="::1" dataSize=42 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="1 ms" status=401 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:15:13.466046200" level=info clientIp="::1" dataSize=396 host=DESKTOP-5T52G1B method=POST path=/v1/login spendTime="140 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:15:44.361726400" level=error clientIp="::1" dataSize=56 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="119 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:15:59.359059300" level=error clientIp="::1" dataSize=56 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/0 spendTime="114 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:17:04.950658600" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="118 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:27:23.679301100" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="107 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:27:28.716093600" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="108 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:27:33.279423800" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="112 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:45:14.292719200" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="1932 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:45:58.418355700" level=error clientIp="::1" dataSize=164 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/-1 spendTime="134 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:47:44.460381600" level=error clientIp="::1" dataSize=147 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/-1 spendTime="139 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 10:48:31.461643300" level=error clientIp="::1" dataSize=56 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/-1 spendTime="151 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 11:17:55.678045800" level=error clientIp="::1" dataSize=56 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/-1 spendTime="131 ms" status=500 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 11:18:00.728813300" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="125 ms" status=200 userAgent=PostmanRuntime/7.29.0
+time="2023-09-06 11:25:52.761138300" level=info clientIp="::1" dataSize=1137 host=DESKTOP-5T52G1B method=GET path=/v1/user/10/1 spendTime="119 ms" status=200 userAgent=PostmanRuntime/7.29.0

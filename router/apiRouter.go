@@ -15,9 +15,10 @@ func ApiRouter(r *gin.Engine) {
 		userService := Services.UserServiceImpl{}
 		itemController := v1.NewUserController(userService)
 		//用户接口
+
 		r1.POST("/user", itemController.RegisterUser)
 		r1.GET("/user/:Size/:Page", middlewares.JWTAuth(), itemController.GetAllUser)
-		r1.PUT("/user", middlewares.JWTAuth(), itemController.UpdateMeUser)
+		r1.PUT("/user", middlewares.JWTAuth(), itemController.EditMeUserInfo)
 		r1.DELETE("/user/:u", itemController.DeleteUser)
 
 		////分类接口

@@ -5,6 +5,7 @@ import (
 	"gin-go-bl/utils"
 	uuid "github.com/satori/go.uuid"
 	"log"
+	"net/http"
 )
 
 type UserServiceImpl struct{}
@@ -38,46 +39,53 @@ func (us UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
 	return count > 0
 }
 
-func (us UserServiceImpl) GetUserInfo(uuid uuid.UUID) (user Models.User, code int) {
+func (us UserServiceImpl) GetInfo(uuid uuid.UUID) (utils.Error, int) {
+	var user Models.User
 	err := DB.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {
 		log.Println(err)
-		recover()
+		return utils.ErrServer, http.StatusInternalServerError
+		//recover()
 	}
-	return user, utils.SUCCESS
+	return utils.OK.WithData(user), http.StatusOK
 }
 
-func (us UserServiceImpl) GetAllUserInfo(pageSize int, pageNum int) (list []Models.User, total int64, err error) {
+func (us UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (utils.Error, int) {
 	db := DB
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
+	total := int64(0)
+	list := []Models.User{}
 	err = db.Model(&Models.User{}).Count(&total).Error
 	if err != nil {
-		return
+		return utils.ErrServer, http.StatusInternalServerError
 	}
 	err = db.Raw("SELECT * FROM user LIMIT ?,?", offset, limit).Scan(&list).Error
 	if err != nil {
 		log.Println(err)
-		return list, total, err
+		return utils.ErrServer, http.StatusInternalServerError
 	}
-	return list, total, nil
+	return utils.OK.WithData(map[string]any{
+		"list":  list,
+		"total": total,
+	}), http.StatusOK
 }
 
-func (us UserServiceImpl) Register(u Models.User) utils.Error {
+func (us UserServiceImpl) Create(u Models.User) (utils.Error, int) {
 	ok := us.CheckUser(u.UserName)
 	u.Password = utils.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
 	if ok {
 		err := DB.Create(&u).Error
 		if err != nil {
-			return utils.ErrGormQuery
+			return utils.ErrServer, http.StatusInternalServerError
 		}
-		return utils.OK.WithData(u)
+		return utils.OK.WithData(u), http.StatusOK
 	}
-	return utils.ErrServer
+	return utils.ErrUserExist, http.StatusOK
 }
 
-func (us UserServiceImpl) UpdateUser(uuid uuid.UUID, data *Models.User) utils.Error {
+func (us UserServiceImpl) EditInfo(uuid uuid.UUID, data *Models.User) (utils.Error, int) {
 	var user Models.User
 
 	//code:= us.CheckUser()
@@ -88,20 +96,20 @@ func (us UserServiceImpl) UpdateUser(uuid uuid.UUID, data *Models.User) utils.Er
 		uuid,
 	).Updates(data).Error
 	if err != nil {
-		return utils.ErrGormQuery
+		return utils.ErrServer, http.StatusInternalServerError
 	}
-	return utils.OK.WithData(data)
+	return utils.OK.WithData(data), http.StatusOK
 
 }
 
-func (us UserServiceImpl) DeleteUser(uuid uuid.UUID) int {
+func (us UserServiceImpl) Delete(uuid uuid.UUID) (utils.Error, int) {
 	// 使用 ? 作为参数占位符
 	err := DB.Exec("DELETE FROM user WHERE uuid = ?", uuid).Error
 	if err != nil {
 		// 处理错误并返回适当的错误代码
 		log.Println(err)
-		return utils.ERROR
+		return utils.ErrServer, http.StatusInternalServerError
 	}
-	return utils.SUCCESS
+	return utils.OK, http.StatusOK
 
 }

@@ -37,7 +37,7 @@ func JWTAuth() gin.HandlerFunc {
 		if !strings.HasPrefix(token, "Bearer") {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code": 401,
-				"msg":  "请登录",
+				"msg":  "token有误,请登录",
 			})
 			c.Abort()
 			return

@@ -28,6 +28,7 @@ var (
 	ErrUserExist    = NewError(20107, "用户已存在")
 	ErrUserToken    = NewError(20108, "用户token有误")
 	ErrUserPwd      = NewError(20109, "用户密码有误")
+	ErrUnauthorized = NewError(20110, "用户未授权")
 
 	// ...
 )
