@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"gin-go-bl/utils"
+	"gin-go-bl/pkg/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

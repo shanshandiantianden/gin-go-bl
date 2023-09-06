@@ -1,7 +1,7 @@
 package conf
 
 import (
-	"gin-go-bl/framework/Models"
+	"gin-go-bl/internal/Models"
 	"github.com/go-ini/ini"
 	"log"
 )

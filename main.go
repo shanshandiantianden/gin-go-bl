@@ -2,9 +2,9 @@ package main
 
 import (
 	"gin-go-bl/conf"
-	"gin-go-bl/framework/Services"
-	"gin-go-bl/middlewares"
-	"gin-go-bl/router"
+	"gin-go-bl/internal/Services"
+	middlewares2 "gin-go-bl/internal/middlewares"
+	"gin-go-bl/internal/router"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -23,7 +23,7 @@ func main() {
 	})
 	conf.ConfInit()
 	Services.MysqlServicesInit()
-	r.Use(gin.Recovery(), middlewares.Cors(), middlewares.Loger(), middlewares.UnifiedResponseMiddleware())
+	r.Use(gin.Recovery(), middlewares2.Cors(), middlewares2.Loger(), middlewares2.UnifiedResponseMiddleware())
 	router.ApiRouter(r)
 
 	if err := r.Run(":8090"); err != nil {
