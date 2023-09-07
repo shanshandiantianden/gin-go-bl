@@ -1,5 +1,5 @@
 package Services
 
-type ArticleService interface {
+type ArticleServiceInterface interface {
 	CRUDService
 }

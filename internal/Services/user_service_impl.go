@@ -5,18 +5,29 @@ import (
 	"gin-go-bl/internal/errmsg"
 	utils2 "gin-go-bl/pkg/utils"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 )
 
-type UserServiceImpl struct{}
+type UserServiceImpl struct {
+	db *gorm.DB
+}
 
-func (us UserServiceImpl) CheckUser(username string) (ok bool) {
+func NewUserService(db *gorm.DB) *UserServiceImpl {
+	return &UserServiceImpl{db: db}
+}
+
+//func (us *UserServiceImpl) InitializeDatabase(db *gorm.DB) {
+//	us.db = db
+//}
+
+func (us *UserServiceImpl) CheckUser(username string) (ok bool) {
 
 	var count int
 
 	// 执行原生 SQL 查询
-	err := DB.Raw("SELECT COUNT(*) FROM user WHERE user_name = ?", username).Scan(&count).Error
+	err := us.db.Raw("SELECT COUNT(*) FROM user WHERE user_name = ?", username).Scan(&count).Error
 	if err != nil {
 		log.Println(err)
 		return false // 返回错误信息
@@ -26,11 +37,11 @@ func (us UserServiceImpl) CheckUser(username string) (ok bool) {
 	return count > 0
 }
 
-func (us UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
+func (us *UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
 	var count int
 
 	// 执行原生 SQL 查询
-	err := DB.Raw("SELECT COUNT(*) FROM user WHERE uuid = ?", uuid).Scan(&count).Error
+	err := us.db.Raw("SELECT COUNT(*) FROM user WHERE uuid = ?", uuid).Scan(&count).Error
 	if err != nil {
 		log.Println(err)
 		return false // 返回错误信息
@@ -40,9 +51,9 @@ func (us UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
 	return count > 0
 }
 
-func (us UserServiceImpl) GetInfo(uuid uuid.UUID) (errmsg.Error, int) {
+func (us *UserServiceImpl) GetInfo(uuid any) (errmsg.Error, int) {
 	var user Models.User
-	err := DB.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
+	err := us.db.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {
 		log.Println(err)
 		return errmsg.ErrServer, http.StatusInternalServerError
@@ -51,13 +62,13 @@ func (us UserServiceImpl) GetInfo(uuid uuid.UUID) (errmsg.Error, int) {
 	return errmsg.OK.WithData(user), http.StatusOK
 }
 
-func (us UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, int) {
-	db := DB
+func (us *UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, int) {
+	db := us.db
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
 	total := int64(0)
 	list := []Models.User{}
-	err = db.Model(&Models.User{}).Count(&total).Error
+	err := db.Model(&Models.User{}).Count(&total).Error
 	if err != nil {
 		return errmsg.ErrServer, http.StatusInternalServerError
 	}
@@ -72,12 +83,13 @@ func (us UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, i
 	}), http.StatusOK
 }
 
-func (us UserServiceImpl) Create(u Models.User) (errmsg.Error, int) {
+func (us *UserServiceImpl) Create(user any) (errmsg.Error, int) {
+	u := user.(Models.User)
 	ok := us.CheckUser(u.UserName)
 	u.Password = utils2.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
 	if ok {
-		err := DB.Create(&u).Error
+		err := us.db.Create(&u).Error
 		if err != nil {
 			return errmsg.ErrServer, http.StatusInternalServerError
 		}
@@ -86,15 +98,15 @@ func (us UserServiceImpl) Create(u Models.User) (errmsg.Error, int) {
 	return errmsg.ErrUserExist, http.StatusOK
 }
 
-func (us UserServiceImpl) EditInfo(uuid uuid.UUID, data *Models.User) (errmsg.Error, int) {
+func (us *UserServiceImpl) EditInfo(uid any, data any) (errmsg.Error, int) {
 	var user Models.User
-
+	uid = uid.(uuid.UUID)
 	//code:= us.CheckUser()
 
 	//data.Password = utils.BcryptHash(data.Password)
-	err := DB.Model(&user).Where(
+	err := us.db.Model(&user).Where(
 		"uuid = ?",
-		uuid,
+		uid,
 	).Updates(data).Error
 	if err != nil {
 		return errmsg.ErrServer, http.StatusInternalServerError
@@ -103,9 +115,9 @@ func (us UserServiceImpl) EditInfo(uuid uuid.UUID, data *Models.User) (errmsg.Er
 
 }
 
-func (us UserServiceImpl) Delete(uuid uuid.UUID) (errmsg.Error, int) {
+func (us *UserServiceImpl) Delete(uuid any) (errmsg.Error, int) {
 	// 使用 ? 作为参数占位符
-	err := DB.Exec("DELETE FROM user WHERE uuid = ?", uuid).Error
+	err := us.db.Exec("DELETE FROM user WHERE uuid = ?", uuid).Error
 	if err != nil {
 		// 处理错误并返回适当的错误代码
 		log.Println(err)

@@ -3,20 +3,25 @@ package Services
 import (
 	"gin-go-bl/internal/Models"
 	"gin-go-bl/internal/errmsg"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 )
 
-type ArticleServiceImpl struct{}
+type ArticleServiceImpl struct {
+	db *gorm.DB
+}
 
-func (art ArticleServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, int) {
-	db := DB
+func NewArticleService(db *gorm.DB) *UserServiceImpl {
+	return &UserServiceImpl{db: db}
+}
+func (art *ArticleServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, int) {
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
 	total := int64(0)
 	list := []Models.Article{}
-	err = db.Model(&Models.Article{}).Count(&total).Error
-	err := DB.Preload("Category").Raw("SELECT * FROM article LIMIT ?,?", offset, limit).Scan(&list).Error
+	err := art.db.Model(&Models.Article{}).Count(&total).Error
+	err = art.db.Preload("Category").Raw("SELECT * FROM article LIMIT ?,?", offset, limit).Scan(&list).Error
 	if err != nil {
 		log.Println(err)
 		return errmsg.ErrServer, http.StatusInternalServerError

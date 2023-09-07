@@ -1,4 +1,4 @@
-package Services
+package database
 
 import (
 	"fmt"
@@ -10,10 +10,7 @@ import (
 	"time"
 )
 
-var DB *gorm.DB
-var err error
-
-func MysqlServicesInit() {
+func MysqlServicesInit() *gorm.DB {
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True&loc=%s",
 		conf.ConfigObj.User,
 		conf.ConfigObj.Password,
@@ -23,8 +20,8 @@ func MysqlServicesInit() {
 		conf.ConfigObj.Charset,
 		url.QueryEscape(conf.ConfigObj.Loc))
 	// 连接数据库
-	DB, err = gorm.Open(mysql.Open(args), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+	DB, err := gorm.Open(mysql.Open(args), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to open database: " + err.Error())
@@ -46,4 +43,5 @@ func MysqlServicesInit() {
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
+	return DB
 }

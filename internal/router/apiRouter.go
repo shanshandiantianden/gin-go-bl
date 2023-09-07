@@ -1,8 +1,8 @@
 package router
 
 import (
-	"gin-go-bl/api/v1"
-	"gin-go-bl/internal/Services"
+	v1 "gin-go-bl/api/v1"
+	"gin-go-bl/internal/di"
 	"gin-go-bl/internal/middlewares"
 	"github.com/gin-gonic/gin"
 )
@@ -11,11 +11,9 @@ func ApiRouter(r *gin.Engine) {
 	r1 := r.Group("/v1")
 	{
 
-		// 初始化服务层并传递给控制器
-		userService := Services.UserServiceImpl{}
-		itemController := v1.NewUserController(userService)
+		userService := di.Container.UserService
 		//用户接口
-
+		itemController := v1.NewUserController(userService)
 		r1.POST("/user", itemController.RegisterUser)
 		r1.GET("/user/:Size/:Page", middlewares.JWTAuth(), itemController.GetAllUser)
 		r1.PUT("/user", middlewares.JWTAuth(), itemController.EditMeUserInfo)

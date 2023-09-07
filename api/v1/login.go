@@ -37,7 +37,7 @@ func (ctrl *UserController) PasswordLogin(c *gin.Context) {
 	req := new(loginRequest)
 	res := new(loginResponse)
 
-	var loginService Services.LoginService
+	var loginService Services.UserServiceImpl
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return

@@ -9,11 +9,9 @@ import (
 	"log"
 )
 
-type LoginService struct{}
-
-func (loginService LoginService) FindUserInfo(name string, password string) (*Models.User, int) {
+func (us *UserServiceImpl) FindUserInfo(name string, password string) (*Models.User, int) {
 	var user Models.User
-	err := DB.Raw("SELECT * FROM user WHERE user_name  = ?", name).First(&user).Error
+	err := us.db.Raw("SELECT * FROM user WHERE user_name  = ?", name).First(&user).Error
 	//如果err为gorm.ErrRecordNotFound(查询记录为空)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

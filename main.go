@@ -2,7 +2,8 @@ package main
 
 import (
 	"gin-go-bl/conf"
-	"gin-go-bl/internal/Services"
+	"gin-go-bl/internal/database"
+	"gin-go-bl/internal/di"
 	middlewares2 "gin-go-bl/internal/middlewares"
 	"gin-go-bl/internal/router"
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,10 @@ func main() {
 		})
 	})
 	conf.ConfInit()
-	Services.MysqlServicesInit()
+	// 初始化数据库连接
+	db := database.MysqlServicesInit()
+	// 初始化依赖注入容器
+	di.InitializeDIContainer(db)
 	r.Use(gin.Recovery(), middlewares2.Cors(), middlewares2.Loger(), middlewares2.UnifiedResponseMiddleware())
 	router.ApiRouter(r)
 

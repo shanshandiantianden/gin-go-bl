@@ -1,10 +1,13 @@
 package Services
 
 import (
+	"gin-go-bl/internal/errmsg"
 	uuid "github.com/satori/go.uuid"
 )
 
-type UserService interface {
+type CRUDOperation func(interface{}) (errmsg.Error, int)
+
+type UserServiceInterface interface {
 	CRUDService
 	// CheckUser 检查用户是否存在
 	CheckUser(username string) (ok bool)
