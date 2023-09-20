@@ -1,8 +1,8 @@
-package Services
+package services
 
 import (
-	"gin-go-bl/internal/Models"
 	"gin-go-bl/internal/errmsg"
+	"gin-go-bl/internal/models"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
@@ -19,8 +19,8 @@ func (art *ArticleServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Err
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
 	total := int64(0)
-	list := []Models.Article{}
-	err := art.db.Model(&Models.Article{}).Count(&total).Error
+	list := []models.Article{}
+	err := art.db.Model(&models.Article{}).Count(&total).Error
 	err = art.db.Preload("Category").Raw("SELECT * FROM article LIMIT ?,?", offset, limit).Scan(&list).Error
 	if err != nil {
 		log.Println(err)

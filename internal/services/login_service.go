@@ -1,16 +1,16 @@
-package Services
+package services
 
 import (
 	"errors"
-	"gin-go-bl/internal/Models"
 	"gin-go-bl/internal/errmsg"
+	"gin-go-bl/internal/models"
 	utils2 "gin-go-bl/pkg/utils"
 	"gorm.io/gorm"
 	"log"
 )
 
-func (us *UserServiceImpl) FindUserInfo(name string, password string) (*Models.User, int) {
-	var user Models.User
+func (us *UserServiceImpl) FindUserInfo(name string, password string) (*models.User, int) {
+	var user models.User
 	err := us.db.Raw("SELECT * FROM user WHERE user_name  = ?", name).First(&user).Error
 	//如果err为gorm.ErrRecordNotFound(查询记录为空)
 	if err != nil {

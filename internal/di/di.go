@@ -1,21 +1,21 @@
 package di
 
 import (
-	"gin-go-bl/internal/Services"
+	"gin-go-bl/internal/services"
 	"gorm.io/gorm"
 )
 
 var Container *DIContainer
 
 type DIContainer struct {
-	UserService    Services.UserServiceInterface
-	ArticleService Services.ArticleServiceInterface
+	UserService    services.UserServiceInterface
+	ArticleService services.ArticleServiceInterface
 }
 
 func NewDIContainer(db *gorm.DB) *DIContainer {
 	return &DIContainer{
-		UserService:    Services.NewUserService(db),
-		ArticleService: Services.NewArticleService(db),
+		UserService:    services.NewUserService(db),
+		ArticleService: services.NewArticleService(db),
 	}
 }
 

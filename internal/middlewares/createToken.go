@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"fmt"
-	"gin-go-bl/internal/Models"
+	"gin-go-bl/internal/models"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func CreateToken(c *gin.Context, sessionInfo *Models.SessionUserInfo) string {
+func CreateToken(c *gin.Context, sessionInfo *models.SessionUserInfo) string {
 	//生成token信息
 	j := NewJWT()
 	claims := CustomClaims{

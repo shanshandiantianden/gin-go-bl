@@ -2,9 +2,9 @@ package v1
 
 import (
 	"gin-go-bl/global"
-	"gin-go-bl/internal/Models"
-	"gin-go-bl/internal/Services"
 	"gin-go-bl/internal/errmsg"
+	"gin-go-bl/internal/models"
+	"gin-go-bl/internal/services"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
@@ -12,10 +12,10 @@ import (
 )
 
 type UserController struct {
-	UserService Services.UserServiceInterface
+	UserService services.UserServiceInterface
 }
 
-func NewUserController(userService Services.UserServiceInterface) *UserController {
+func NewUserController(userService services.UserServiceInterface) *UserController {
 	return &UserController{
 		UserService: userService,
 	}
@@ -40,7 +40,7 @@ func (ctrl *UserController) GetMeUser(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, errmsg.ErrUnauthorized)
 		return
 	}
-	user, ok := tokenUser.(*Models.User)
+	user, ok := tokenUser.(*models.User)
 	if !ok {
 		// 返回未经授权的错误响应
 		c.JSON(http.StatusUnauthorized, errmsg.ErrUnauthorized)
@@ -51,7 +51,7 @@ func (ctrl *UserController) GetMeUser(c *gin.Context) {
 }
 
 func (ctrl *UserController) EditMeUserInfo(c *gin.Context) {
-	var updateData Models.User
+	var updateData models.User
 	uuidString, exists := c.Get("user_uuid")
 	if !exists {
 		// 返回未经授权的错误响应

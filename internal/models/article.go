@@ -1,4 +1,4 @@
-package Models
+package models
 
 type Article struct {
 	Category   Category   `gorm:"foreignKey:CategoryId"`

@@ -9,12 +9,12 @@ func Index(c *gin.Context) {
 }
 
 //func AddAdmin(c *gin.Context) {
-//	var data Models.Admin
+//	var data models.Admin
 //	if err := c.ShouldBind(&data); err != nil {
 //		c.JSON(200, "bindJsonFail data is invalid")
 //		return
 //	}
-//	code := Models.CreatAdmin(&data)
+//	code := models.CreatAdmin(&data)
 //	c.JSON(200, gin.H{
 //		"data":    data,
 //		"status":  code,

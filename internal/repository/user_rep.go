@@ -1,4 +1,4 @@
-package Repository
+package repository
 
 type UserRepository interface {
 	//Fetch(cursor string, num int64) ([]*models.Article, error)

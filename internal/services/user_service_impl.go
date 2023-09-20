@@ -1,8 +1,8 @@
-package Services
+package services
 
 import (
-	"gin-go-bl/internal/Models"
 	"gin-go-bl/internal/errmsg"
+	"gin-go-bl/internal/models"
 	utils2 "gin-go-bl/pkg/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -52,7 +52,7 @@ func (us *UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
 }
 
 func (us *UserServiceImpl) GetInfo(uuid any) (errmsg.Error, int) {
-	var user Models.User
+	var user models.User
 	err := us.db.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {
 		log.Println(err)
@@ -67,8 +67,8 @@ func (us *UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, 
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
 	total := int64(0)
-	list := []Models.User{}
-	err := db.Model(&Models.User{}).Count(&total).Error
+	list := []models.User{}
+	err := db.Model(&models.User{}).Count(&total).Error
 	if err != nil {
 		return errmsg.ErrServer, http.StatusInternalServerError
 	}
@@ -84,7 +84,7 @@ func (us *UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, 
 }
 
 func (us *UserServiceImpl) Create(user any) (errmsg.Error, int) {
-	u := user.(Models.User)
+	u := user.(models.User)
 	ok := us.CheckUser(u.UserName)
 	u.Password = utils2.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
@@ -99,7 +99,7 @@ func (us *UserServiceImpl) Create(user any) (errmsg.Error, int) {
 }
 
 func (us *UserServiceImpl) EditInfo(uid any, data any) (errmsg.Error, int) {
-	var user Models.User
+	var user models.User
 	uid = uid.(uuid.UUID)
 	//code:= us.CheckUser()
 

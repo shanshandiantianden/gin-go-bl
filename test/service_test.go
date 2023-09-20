@@ -45,7 +45,7 @@ func MysqlServicesInit() {
 	}
 
 	////数据库迁移表，第一次启动后，可以注释掉
-	//err := DB.AutoMigrate(&Models.User{}, &Models.Admin{}, &Models.Article{}, &Models.Category{})
+	//err := DB.AutoMigrate(&models.User{}, &models.Admin{}, &models.Article{}, &models.Category{})
 	//if err != nil {
 	//
 	//	return
@@ -63,7 +63,7 @@ func MysqlServicesInit() {
 }
 func DeleteUser2asdaac(uuid uuid.UUID) int {
 	fmt.Println(uuid)
-	//var user Models.User
+	//var user models.User
 	//err := DB.Where("uuid = ?", uuid).Delete(&user).Error
 	err = DB.Raw("delete from user where uuid = ?", uuid).Error
 	if err != nil {

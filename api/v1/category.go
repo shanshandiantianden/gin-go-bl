@@ -1,7 +1,7 @@
 package v1
 
 //import (
-//	models2 "gin-go-bl/internal/Models"
+//	models2 "gin-go-bl/internal/models"
 //	"gin-go-bl/utils"
 //	"github.com/gin-gonic/gin"
 //	"strconv"
@@ -95,7 +95,7 @@ package v1
 ////		num = -1
 ////	}
 ////
-////	data, total := Models.GetCategory(size, num)
+////	data, total := models.GetCategory(size, num)
 ////	code = utils.SUCCESS
 ////	c.HTML(200, "tags.html", gin.H{
 ////		"data":    data,

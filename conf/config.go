@@ -1,12 +1,12 @@
 package conf
 
 import (
-	"gin-go-bl/internal/Models"
+	"gin-go-bl/internal/models"
 	"github.com/go-ini/ini"
 	"log"
 )
 
-var ConfigObj = new(Models.Config)
+var ConfigObj = new(models.Config)
 
 func ConfInit() {
 	//读取配置文件

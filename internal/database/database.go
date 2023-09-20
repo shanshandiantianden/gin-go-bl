@@ -28,7 +28,7 @@ func MysqlServicesInit() *gorm.DB {
 	}
 
 	////数据库迁移表，第一次启动后，可以注释掉
-	//err := DB.AutoMigrate(&Models.User{}, &Models.Admin{}, &Models.Article{}, &Models.Category{})
+	//err := DB.AutoMigrate(&models.User{}, &models.Admin{}, &models.Article{}, &models.Category{})
 	//if err != nil {
 	//
 	//	return

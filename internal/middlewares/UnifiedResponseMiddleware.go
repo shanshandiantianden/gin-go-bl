@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"gin-go-bl/internal/Models"
+	"gin-go-bl/internal/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -20,7 +20,7 @@ func UnifiedResponseMiddleware() gin.HandlerFunc {
 		// 如果发生了错误，通过ErrorResponse函数创建一个错误响应，并返回给客户端
 		if len(c.Errors) > 0 {
 			err := c.Errors.Last()
-			Models.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+			models.ErrorResponse(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
@@ -35,7 +35,7 @@ func UnifiedResponseMiddleware() gin.HandlerFunc {
 		if c.Writer.Status() >= http.StatusOK && c.Writer.Status() < http.StatusMultipleChoices {
 			data, exists := c.Get("response_data")
 			if exists {
-				Models.SuccessResponse(c, c.Writer.Status(), data)
+				models.SuccessResponse(c, c.Writer.Status(), data)
 				return
 			}
 		}

@@ -1,4 +1,4 @@
-package Models
+package models
 
 type DatabaseConfig struct {
 	User     string `ini:"user"`

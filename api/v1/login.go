@@ -1,10 +1,10 @@
 package v1
 
 import (
-	"gin-go-bl/internal/Models"
-	"gin-go-bl/internal/Services"
 	"gin-go-bl/internal/errmsg"
 	"gin-go-bl/internal/middlewares"
+	"gin-go-bl/internal/models"
+	"gin-go-bl/internal/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -15,11 +15,11 @@ type loginRequest struct {
 }
 type loginResponse struct {
 	Token    string                  `json:"token"` // 用户身份标识
-	UserInfo *Models.SessionUserInfo `json:"userinfo"`
+	UserInfo *models.SessionUserInfo `json:"userinfo"`
 }
 
 func (ctrl *UserController) RegisterUser(c *gin.Context) {
-	var user Models.User
+	var user models.User
 	if err := c.ShouldBind(&user); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
@@ -37,7 +37,7 @@ func (ctrl *UserController) PasswordLogin(c *gin.Context) {
 	req := new(loginRequest)
 	res := new(loginResponse)
 
-	var loginService Services.UserServiceImpl
+	var loginService services.UserServiceImpl
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
@@ -56,7 +56,7 @@ func (ctrl *UserController) PasswordLogin(c *gin.Context) {
 		return
 	default:
 		// 用户信息
-		res.UserInfo = &Models.SessionUserInfo{
+		res.UserInfo = &models.SessionUserInfo{
 			UserID:   info.ID,
 			UserName: info.UserName,
 			UUID:     info.UUID,

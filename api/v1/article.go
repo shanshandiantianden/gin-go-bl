@@ -28,7 +28,7 @@ package v1
 //	}
 //
 //	arts, code, atotal := models2.GetAllArticle(size, num)
-//	//cate, _ := Models.GetCategory(100, 0)
+//	//cate, _ := models.GetCategory(100, 0)
 //	c.JSON(200, gin.H{
 //		"arts": arts,
 //		//"cate":    cate,
@@ -40,7 +40,7 @@ package v1
 //func GetAllArticles(c *gin.Context) {
 //
 //	arts, code, atotal := models2.GetAllArticles()
-//	//cate, _ := Models.GetCategory(100, 0)
+//	//cate, _ := models.GetCategory(100, 0)
 //	c.JSON(200, gin.H{
 //		"arts": arts,
 //		//"cate":    cate,
