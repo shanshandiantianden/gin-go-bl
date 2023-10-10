@@ -73,7 +73,7 @@ func (ctrl *UserController) EditMeUserInfo(c *gin.Context) {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
 	}
-	cOk := ctrl.UserService.CheckUser(updateData.UserName)
+	cOk := ctrl.UserService.CheckUserName(updateData.UserName)
 
 	if !cOk {
 		// 返回用户名冲突的错误响应

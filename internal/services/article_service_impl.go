@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"gin-go-bl/internal/errmsg"
 	"gin-go-bl/internal/models"
 	"gorm.io/gorm"
@@ -32,30 +33,39 @@ func (art *ArticleServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Err
 	}), http.StatusOK
 }
 
-//func (art ArticleServiceImpl) GetArticle(id int) (Article, int) {
-//	var article Article
-//	err := DB.Preload("Category").Where("aid = ?", id).First(&article).Error
-//
-//	switch {
-//	case err != nil && err != gorm.ErrRecordNotFound:
-//		return article, utils2.ERROR_ART_NULL
-//	default:
-//		return article, utils2.SUCCESS
+func (art ArticleServiceImpl) GetIDArticle(id int) (errmsg.Error, int) {
+	var article models.Article
+	err := art.db.Preload("Category").Where("aid = ?", id).First(&article).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errmsg.ErrArticleNotExist, http.StatusOK
+		}
+		return errmsg.ErrServer, http.StatusInternalServerError
+	}
+	return errmsg.OK.WithData(article), http.StatusOK
+
+}
+
+//func (art ArticleServiceImpl) GetUserArticle(uid int, pageSize int, pageNum int) (errmsg.Error, int) {
+//	var list []models.Article
+//	var total int64
+//	limit := pageSize
+//	offset := pageSize * (pageNum - 1)
+//	art.db.Model(&models.Article{}).Where("user_id = ?", uid).Count(&total)
+//	err := art.db.Preload("Category").Limit(limit).Offset(offset).Where("user_id = ?", uid).Find(&article).Error
+//	if err != nil {
+//		if errors.Is(err, gorm.ErrRecordNotFound) {
+//			return errmsg.ErrArticleNotExist, http.StatusOK
+//		}
+//		return errmsg.ErrServer, http.StatusInternalServerError
 //	}
+//	return errmsg.OK.WithData(map[string]any{
+//		"list":  list,
+//		"total": total,
+//	}), http.StatusOK
+//
 //}
 
-//func(art ArticleServiceImpl) GetUserArticle(id int, pageSize int, pageNum int) ([]Article, int, int64) {
-//	var article []Article
-//	var total int64
-//	DB.Model(&Article{}).Where("user_id = ?", id).Count(&total)
-//	err := DB.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("user_id = ?", id).Find(&article).Error
-//	switch {
-//	case err != nil && err != gorm.ErrRecordNotFound:
-//		return nil, utils.ERROR_CAART_NULL, 0
-//	default:
-//		return article, utils.SUCCESS, total
-//	}
-//}
 //func (art ArticleServiceImpl)GetCatArticle(id int, pageSize int, pageNum int) ([]Article, int, int64) {
 //	var article []Article
 //	var total int64

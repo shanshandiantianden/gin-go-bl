@@ -7,22 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ApiRouter() *gin.Engine {
-
-	gin.SetMode(gin.DebugMode)
-	r := gin.Default()
-
-	//r.LoadHTMLGlob("templates/*")
-	////r.LoadHTMLGlob("views/*")
-	////r.LoadHTMLGlob("views/**/*")
-	//r.Static("/static", "./static")
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"index": "默认",
-		})
-	})
-
-	r.Use(gin.Recovery(), middlewares.Cors(), middlewares.Loger(), middlewares.UnifiedResponseMiddleware())
+func UserRouter(r *gin.Engine) {
 
 	r1 := r.Group("/v1")
 	{
@@ -38,10 +23,14 @@ func ApiRouter() *gin.Engine {
 		r1.POST("/login", itemController.PasswordLogin)
 
 	}
-	r2 := r.Group("/v1")
+
+}
+
+func ArticleRouter(r *gin.Engine) {
+	r1 := r.Group("/v1")
 	{
 		////分类接口
-		r2.POST("/cate", middlewares.JWTAuth())
+		r1.POST("/cate", middlewares.JWTAuth())
 		//r2.GET("/cate/:num/:size", v12.GetCategory)
 		//r2.PUT("/cate/:id", middlewares.AuthMiddleware(), v12.UpdateCategory)
 		//r2.DELETE("/cate/:id", middlewares.AuthMiddleware(), v12.DeleteCategory)
@@ -58,7 +47,5 @@ func ApiRouter() *gin.Engine {
 		//r2.DELETE("/article/:id", middlewares.AuthMiddleware(), v12.DeleteArticle)
 
 	}
-
-	return r
 
 }

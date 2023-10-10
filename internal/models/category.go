@@ -1,8 +1,8 @@
 package models
 
 type Category struct {
-	Cid    uint   `gorm:"int;not null;primary_key;" json:"cid"`
-	CaName string `gorm:"varchar(20);not null" json:"caname"`
+	BaseModel
+	Name string `gorm:"varchar(20);not null" json:"name"`
 }
 type Categorys struct {
 	Category           Category

@@ -22,18 +22,18 @@ func NewUserService(db *gorm.DB) *UserServiceImpl {
 //	us.db = db
 //}
 
-func (us *UserServiceImpl) CheckUser(username string) (ok bool) {
+func (us *UserServiceImpl) CheckUserName(username string) (ok bool) {
 
 	var count int
 
 	// 执行原生 SQL 查询
-	err := us.db.Raw("SELECT COUNT(*) FROM user WHERE user_name = ?", username).Scan(&count).Error
+	err := us.db.Raw("SELECT COUNT(user_name) FROM user WHERE user_name = ?", username).Scan(&count).Error
 	if err != nil {
 		log.Println(err)
 		return false // 返回错误信息
 	}
 
-	// 如果记录数量大于 0，则表示 UUID 存在
+	// 如果记录数量大于 0，则表示 username 存在
 	return count > 0
 }
 
@@ -41,7 +41,7 @@ func (us *UserServiceImpl) CheckUUID(uuid uuid.UUID) (ok bool) {
 	var count int
 
 	// 执行原生 SQL 查询
-	err := us.db.Raw("SELECT COUNT(*) FROM user WHERE uuid = ?", uuid).Scan(&count).Error
+	err := us.db.Raw("SELECT COUNT(uuid) FROM user WHERE uuid = ?", uuid).Scan(&count).Error
 	if err != nil {
 		log.Println(err)
 		return false // 返回错误信息
@@ -67,7 +67,7 @@ func (us *UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, 
 	limit := pageSize
 	offset := pageSize * (pageNum - 1)
 	total := int64(0)
-	list := []models.User{}
+	var list []models.User
 	err := db.Model(&models.User{}).Count(&total).Error
 	if err != nil {
 		return errmsg.ErrServer, http.StatusInternalServerError
@@ -85,10 +85,10 @@ func (us *UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, 
 
 func (us *UserServiceImpl) Create(user any) (errmsg.Error, int) {
 	u := user.(models.User)
-	ok := us.CheckUser(u.UserName)
+	ok := us.CheckUserName(u.UserName)
 	u.Password = utils2.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
-	if ok {
+	if !ok {
 		err := us.db.Create(&u).Error
 		if err != nil {
 			return errmsg.ErrServer, http.StatusInternalServerError

@@ -10,7 +10,7 @@ type CRUDOperation func(interface{}) (errmsg.Error, int)
 type UserServiceInterface interface {
 	CRUDService
 	// CheckUser 检查用户是否存在
-	CheckUser(username string) (ok bool)
+	CheckUserName(username string) (ok bool)
 	// CheckUUID
 	CheckUUID(uuid uuid.UUID) (ok bool)
 }
