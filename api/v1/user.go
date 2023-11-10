@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"gin-go-bl/global"
 	"gin-go-bl/internal/errmsg"
 	"gin-go-bl/internal/models"
@@ -37,13 +38,13 @@ func (ctrl *UserController) GetMeUser(c *gin.Context) {
 	tokenUser, exists := c.Get("user")
 	if !exists {
 		// 返回未经授权的错误响应
-		c.JSON(http.StatusUnauthorized, errmsg.ErrUnauthorized)
+		c.JSON(http.StatusUnauthorized, errmsg.ErrUnauthorized.WithData(nil))
 		return
 	}
 	user, ok := tokenUser.(*models.User)
 	if !ok {
 		// 返回未经授权的错误响应
-		c.JSON(http.StatusUnauthorized, errmsg.ErrUnauthorized)
+		c.JSON(http.StatusUnauthorized, errmsg.ErrUnauthorized.WithData(nil))
 		return
 	}
 	res, httpStatus := ctrl.UserService.GetInfo(user.UUID)
@@ -77,13 +78,13 @@ func (ctrl *UserController) EditMeUserInfo(c *gin.Context) {
 
 	if !cOk {
 		// 返回用户名冲突的错误响应
-		c.JSON(http.StatusUnauthorized, errmsg.ErrUserExist)
+		c.JSON(http.StatusUnauthorized, errmsg.ErrUserExist.WithData(nil))
 		return
 	}
 	// 检查密码是否为空
 	if updateData.Password != "" {
 
-		c.JSON(http.StatusUnauthorized, errmsg.ErrParam)
+		c.JSON(http.StatusUnauthorized, errmsg.ErrParam.WithData(nil))
 		return
 
 	}
@@ -101,10 +102,10 @@ func (ctrl *UserController) DeleteUser(c *gin.Context) {
 		return
 	}
 	if !ctrl.UserService.CheckUUID(u) {
-		c.JSON(http.StatusUnauthorized, errmsg.ErrUserNotExist)
+		c.JSON(http.StatusUnauthorized, errmsg.ErrUserNotExist.WithData(nil))
 		return
 	}
 	res, httpStatus := ctrl.UserService.Delete(u)
-
+	fmt.Println(res.ToString())
 	c.JSON(httpStatus, res)
 }

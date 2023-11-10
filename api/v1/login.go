@@ -4,7 +4,6 @@ import (
 	"gin-go-bl/internal/errmsg"
 	"gin-go-bl/internal/middlewares"
 	"gin-go-bl/internal/models"
-	"gin-go-bl/internal/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -37,7 +36,6 @@ func (ctrl *UserController) PasswordLogin(c *gin.Context) {
 	req := new(loginRequest)
 	res := new(loginResponse)
 
-	var loginService services.UserServiceImpl
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(200, "bindJsonFail data is invalid")
 		return
@@ -46,7 +44,7 @@ func (ctrl *UserController) PasswordLogin(c *gin.Context) {
 		c.JSON(http.StatusNotFound, errmsg.ErrLoginNil)
 		return
 	}
-	info, code := loginService.FindUserInfo(req.Username, req.Password)
+	info, code := ctrl.UserService.FindUserInfo(req.Username, req.Password)
 	switch {
 	case code == errmsg.ErrUserNotExist.GetStatusCode():
 		c.JSON(http.StatusNotFound, errmsg.ErrUserNotExist)

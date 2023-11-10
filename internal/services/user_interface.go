@@ -2,6 +2,7 @@ package services
 
 import (
 	"gin-go-bl/internal/errmsg"
+	"gin-go-bl/internal/models"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -13,4 +14,5 @@ type UserServiceInterface interface {
 	CheckUserName(username string) (ok bool)
 	// CheckUUID
 	CheckUUID(uuid uuid.UUID) (ok bool)
+	FindUserInfo(name string, password string) (*models.User, int)
 }

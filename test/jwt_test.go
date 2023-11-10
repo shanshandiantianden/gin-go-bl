@@ -25,3 +25,15 @@ func TestOne(t *testing.T) {
 	//fmt.Println(a.RefreshToken(c))
 	//fmt.Println(a.RefreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MSwiTmlja05hbWUiOiLmtYvor5UiLCJVVUlEIjoiMjRlMjgxOTMtMDIyYi00ZTM2LTk4ZmEtNTY0MDI0NzExOGFjIiwiZXhwIjoxNjk0MjY4NTExLCJpYXQiOjE2OTM2NjM3MTEsImlzcyI6InRlc3QiLCJuYmYiOjE2OTM2NjM3MTF9.22yX2WEfDz-bbDS54-uGydc9IforleuC_7LMLxJbRok"))
 }
+
+type S struct {
+	C string
+	F string
+	O int
+}
+
+func TestTwo(t *testing.T) {
+	var f S
+	fmt.Println(&f, &f.C, &f.F, &f.O)
+
+}

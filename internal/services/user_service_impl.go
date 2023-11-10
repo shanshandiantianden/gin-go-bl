@@ -56,7 +56,7 @@ func (us *UserServiceImpl) GetInfo(uuid any) (errmsg.Error, int) {
 	err := us.db.Raw("SELECT * FROM user WHERE uuid = ?", uuid).Scan(&user).Error
 	if err != nil {
 		log.Println(err)
-		return errmsg.ErrServer, http.StatusInternalServerError
+		return errmsg.ErrServer.WithData(nil), http.StatusInternalServerError
 		//recover()
 	}
 	return errmsg.OK.WithData(user), http.StatusOK
@@ -70,12 +70,12 @@ func (us *UserServiceImpl) GetAllInfo(pageSize int, pageNum int) (errmsg.Error, 
 	var list []models.User
 	err := db.Model(&models.User{}).Count(&total).Error
 	if err != nil {
-		return errmsg.ErrServer, http.StatusInternalServerError
+		return errmsg.ErrServer.WithData(nil), http.StatusInternalServerError
 	}
 	err = db.Raw("SELECT * FROM user LIMIT ?,?", offset, limit).Scan(&list).Error
 	if err != nil {
 		log.Println(err)
-		return errmsg.ErrServer, http.StatusInternalServerError
+		return errmsg.ErrServer.WithData(nil), http.StatusInternalServerError
 	}
 	return errmsg.OK.WithData(map[string]any{
 		"list":  list,
@@ -91,11 +91,16 @@ func (us *UserServiceImpl) Create(user any) (errmsg.Error, int) {
 	if !ok {
 		err := us.db.Create(&u).Error
 		if err != nil {
-			return errmsg.ErrServer, http.StatusInternalServerError
+			return errmsg.ErrServer.WithData(nil), http.StatusInternalServerError
 		}
-		return errmsg.OK.WithData(u), http.StatusOK
+		return errmsg.OK.WithData(map[string]any{
+			"username": u.UserName,
+			"nickname": u.NickName,
+			"avatar":   u.Avatar,
+			"phone":    u.Phone,
+		}), http.StatusOK
 	}
-	return errmsg.ErrUserExist, http.StatusOK
+	return errmsg.ErrUserExist.WithData(nil), http.StatusOK
 }
 
 func (us *UserServiceImpl) EditInfo(uid any, data any) (errmsg.Error, int) {
@@ -109,7 +114,7 @@ func (us *UserServiceImpl) EditInfo(uid any, data any) (errmsg.Error, int) {
 		uid,
 	).Updates(data).Error
 	if err != nil {
-		return errmsg.ErrServer, http.StatusInternalServerError
+		return errmsg.ErrServer.WithData(nil), http.StatusInternalServerError
 	}
 	return errmsg.OK.WithData(data), http.StatusOK
 
@@ -121,8 +126,9 @@ func (us *UserServiceImpl) Delete(uuid any) (errmsg.Error, int) {
 	if err != nil {
 		// 处理错误并返回适当的错误代码
 		log.Println(err)
-		return errmsg.ErrServer, http.StatusInternalServerError
+		return errmsg.ErrServer.WithData(nil), http.StatusInternalServerError
 	}
-	return errmsg.OK, http.StatusOK
+
+	return errmsg.OK.WithData(nil), http.StatusOK
 
 }

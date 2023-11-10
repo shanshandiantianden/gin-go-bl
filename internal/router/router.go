@@ -20,7 +20,7 @@ func InitializeRoutes() *gin.Engine {
 		})
 	})
 
-	r.Use(gin.Recovery(), middlewares.Cors(), middlewares.Loger(), middlewares.UnifiedResponseMiddleware())
+	r.Use(gin.Recovery(), middlewares.Cors(), middlewares.Loger())
 
 	// 设置路由和中间件
 	// 这里你可以按照建议进行路由组织和中间件的抽象
